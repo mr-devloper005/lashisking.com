@@ -97,7 +97,11 @@ export function Navbar() {
   const { isAuthenticated } = useAuth()
   const { recipe } = getFactoryState()
 
-  const navigation = useMemo(() => SITE_CONFIG.tasks.filter((task) => task.enabled && task.key !== 'profile'), [])
+  const navigation = useMemo(() => SITE_CONFIG.tasks.filter((task) => task.enabled && task.key !== 'profile' && task.key !== 'image'), [])
+  const sidebarQuickLinks = [
+    { name: 'Image Sharing', href: '/image-sharing', icon: ImageIcon },
+    { name: 'Profiles', href: '/profile', icon: User },
+  ]
   const primaryNavigation = navigation.slice(0, 5)
   const mobileNavigation = navigation.map((task) => ({
     name: task.label,
@@ -146,10 +150,10 @@ export function Navbar() {
           {isMobileMenuOpen && (
             <div className={palette.mobile}>
               <div className="space-y-2 px-4 py-4">
-                <div className={cn('mb-3 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium', palette.search)}>
+                <Link href="/search" onClick={() => setIsMobileMenuOpen(false)} className={cn('mb-3 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors', palette.post)}>
                   <Search className="h-4 w-4" />
                   Find businesses, spaces, and services
-                </div>
+                </Link>
                 {mobileNavigation.map((item) => {
                   const isActive = pathname.startsWith(item.href)
                   return (
@@ -176,15 +180,16 @@ export function Navbar() {
               </div>
             </Link>
 
-            <div className={cn('mt-7 flex items-center gap-3 rounded-[1.4rem] px-4 py-3 text-sm', palette.search)}>
+            <Link href="/search" className={cn('mt-7 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors', palette.post)}>
               <Search className="h-4 w-4 shrink-0" />
               <div className="min-w-0">
                 <div className="truncate font-medium">Find local businesses</div>
                 <div className="truncate text-xs opacity-70">Search by service, category, or city</div>
               </div>
-            </div>
+              <ChevronRight className="ml-auto h-4 w-4 opacity-45" />
+            </Link>
 
-            {primaryTask ? (
+            {primaryTask && primaryTask.key !== 'image' ? (
               <Link href={primaryTask.route} className="mt-5 inline-flex items-center gap-2 self-start rounded-full border border-current/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] opacity-75">
                 <Sparkles className="h-3.5 w-3.5" />
                 {primaryTask.label}
@@ -210,6 +215,29 @@ export function Navbar() {
                 )
               })}
             </nav>
+
+            <div className="mt-6">
+              <p className="px-2 text-xs font-semibold uppercase tracking-[0.2em] opacity-70">Quick access</p>
+              <nav className="mt-2 space-y-2">
+                {sidebarQuickLinks.map((item) => {
+                  const isActive = pathname.startsWith(item.href)
+                  const Icon = item.icon
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={cn(
+                        'flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors',
+                        isActive ? 'bg-foreground text-background' : palette.post,
+                      )}
+                    >
+                      <Icon className="h-4 w-4 shrink-0" />
+                      <span className="truncate">{item.name}</span>
+                    </Link>
+                  )
+                })}
+              </nav>
+            </div>
 
             <div className="mt-8 grid gap-3">
               <div className={cn('rounded-[1.6rem] px-4 py-4 text-sm', palette.post)}>
@@ -311,15 +339,16 @@ export function Navbar() {
             </div>
           </Link>
 
-          <div className={cn('mt-7 rounded-[1.35rem] border border-current/10 px-4 py-4', isFloating ? 'bg-white/6 backdrop-blur' : isEditorial ? 'bg-white/70' : isUtility ? 'bg-white/80' : 'bg-slate-50')}>
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] opacity-70">
-              <Search className="h-3.5 w-3.5" />
-              Quick Find
+          <Link href="/search" className={cn('mt-7 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors', style.idle)}>
+            <Search className="h-4 w-4 shrink-0" />
+            <div className="min-w-0">
+              <div className="truncate">Quick Find</div>
+              <div className="truncate text-xs opacity-70">Browse by task, lane, or content type</div>
             </div>
-            <p className="mt-2 text-sm leading-6 opacity-80">Browse by task, lane, or content type without cramped top navigation.</p>
-          </div>
+            <ChevronRight className="ml-auto h-4 w-4 opacity-45" />
+          </Link>
 
-          {primaryTask ? (
+          {primaryTask && primaryTask.key !== 'image' ? (
             <Link href={primaryTask.route} className={cn('mt-5 inline-flex items-center gap-2 self-start rounded-full px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em]', isFloating ? 'border border-white/10 bg-white/6 text-white/80' : 'border border-current/10 bg-white/70 opacity-80')}>
               <Sparkles className="h-3.5 w-3.5" />
               {primaryTask.label}
@@ -339,6 +368,23 @@ export function Navbar() {
               )
             })}
           </nav>
+
+          <div className="mt-6">
+            <p className="px-2 text-xs font-semibold uppercase tracking-[0.2em] opacity-70">Quick access</p>
+            <nav className="mt-2 space-y-2">
+              {sidebarQuickLinks.map((item) => {
+                const Icon = item.icon
+                const isActive = pathname.startsWith(item.href)
+                return (
+                  <Link key={item.name} href={item.href} className={cn('flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors', isActive ? style.active : style.idle)}>
+                    <Icon className="h-4 w-4 shrink-0" />
+                    <span className="truncate">{item.name}</span>
+                    <ChevronRight className="ml-auto h-4 w-4 opacity-45" />
+                  </Link>
+                )
+              })}
+            </nav>
+          </div>
 
           <div className="mt-8 space-y-3">
             <div className={cn('rounded-[1.6rem] border border-current/10 px-4 py-4 text-sm', isFloating ? 'bg-white/6 text-slate-200' : 'bg-white/75')}>

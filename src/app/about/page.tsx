@@ -1,93 +1,49 @@
-import Link from "next/link";
-import { PageShell } from "@/components/shared/page-shell";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { mockTeamMembers } from "@/data/mock-data";
-import { SITE_CONFIG } from "@/lib/site-config";
+import Link from 'next/link'
+import { ArrowRight, Compass, HeartHandshake, Rocket } from 'lucide-react'
+import { NavbarShell } from '@/components/shared/navbar-shell'
+import { Footer } from '@/components/shared/footer'
+import { SITE_CONFIG } from '@/lib/site-config'
+import { getFactoryState } from '@/design/factory/get-factory-state'
+import { getProductKind } from '@/design/factory/get-product-kind'
 
-const highlights = [
-  { label: "Creators onboarded", value: "12k+" },
-  { label: "Bookmarks shared", value: "180k" },
-  { label: "Listings published", value: "8.6k" },
-];
+function getTone() {
+  return { shell: 'bg-background text-foreground', panel: 'border border-border bg-card', soft: 'border border-border bg-secondary/40', muted: 'text-muted-foreground', action: 'bg-primary text-primary-foreground hover:opacity-90' }
+}
 
 const values = [
-  { title: "Curated by people", description: "We believe trusted recommendations beat endless feeds." },
-  { title: "Designed for focus", description: "Clear, calm UI helps you find the next best resource fast." },
-  { title: "Built to share", description: "Collections make collaboration and knowledge flow effortless." },
-];
+  { icon: Compass, title: 'Clear discovery', body: 'We design for useful discovery with structure that helps visitors decide quickly.' },
+  { icon: HeartHandshake, title: 'Human trust', body: 'Real profiles, verified details, and thoughtful curation keep quality high.' },
+  { icon: Rocket, title: 'Fast execution', body: 'From creators to businesses, teams ship and iterate without heavy complexity.' },
+]
 
 export default function AboutPage() {
-  return (
-    <PageShell
-      title={`About ${SITE_CONFIG.name}`}
-      description={`${SITE_CONFIG.name} is a modern platform for creators, communities, and curated business discovery.`}
-      actions={
-        <>
-          <Button variant="outline" asChild>
-            <Link href="/team">Meet the Team</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/contact">Contact Us</Link>
-          </Button>
-        </>
-      }
-    >
-      <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <Card className="border-border bg-card">
-          <CardContent className="space-y-4 p-6">
-            <Badge variant="secondary">Our Story</Badge>
-            <h2 className="text-2xl font-semibold text-foreground">
-              A single home for knowledge, discovery, and community.
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {SITE_CONFIG.name} brings together publishing, listings, and social bookmarking so teams can move faster
-              and keep their best resources close.
-            </p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {highlights.map((item) => (
-                <div key={item.label} className="rounded-lg border border-border bg-secondary/40 p-4">
-                  <div className="text-2xl font-semibold text-foreground">{item.value}</div>
-                  <div className="text-xs text-muted-foreground">{item.label}</div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-        <div className="space-y-4">
-          {values.map((value) => (
-            <Card key={value.title} className="border-border bg-card">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-foreground">{value.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{value.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
+  const { recipe } = getFactoryState()
+  const tone = getTone()
 
-      <div className="mt-10 grid gap-6 md:grid-cols-3">
-        {mockTeamMembers.map((member) => (
-          <Card key={member.id} className="border-border bg-card transition-transform hover:-translate-y-1">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={member.avatar} alt={member.name} />
-                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{member.name}</p>
-                  <p className="text-xs text-muted-foreground">{member.role}</p>
-                </div>
-              </div>
-              <p className="mt-3 text-sm text-muted-foreground">{member.bio}</p>
-              <p className="mt-3 text-xs text-muted-foreground">{member.location}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </PageShell>
-  );
+  return (
+    <div className={`min-h-screen ${tone.shell}`}>
+      <NavbarShell />
+      <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <section className={`rounded-[2rem] p-8 ${tone.panel}`}>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">About {SITE_CONFIG.name}</p>
+          <h1 className="mt-3 text-5xl font-semibold tracking-[-0.05em]">Built for modern discovery, publishing, and growth.</h1>
+          <p className={`mt-4 max-w-3xl text-sm leading-8 ${tone.muted}`}>We blend structure, design clarity, and trusted content so users can find what matters faster and teams can scale confidently.</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href="/team" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.soft}`}>Meet the team</Link>
+            <Link href="/contact" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.action}`}>Contact us <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+        </section>
+        <section className="mt-8 grid gap-4 md:grid-cols-3">
+          {values.map((value) => (
+            <div key={value.title} className={`rounded-[1.4rem] p-5 ${tone.soft}`}>
+              <value.icon className="h-5 w-5" />
+              <h2 className="mt-3 text-lg font-semibold">{value.title}</h2>
+              <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{value.body}</p>
+            </div>
+          ))}
+        </section>
+      </main>
+      <Footer />
+    </div>
+  )
 }
