@@ -26,6 +26,7 @@ const footerLinks = {
   })),
   company: [
     { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
     { name: 'Team', href: '/team' },
     { name: 'Careers', href: '/careers' },
     { name: 'Blog', href: '/blog' },
@@ -67,6 +68,10 @@ export function Footer() {
           <div>
             <p className="text-lg font-semibold">{SITE_CONFIG.name}</p>
             <p className="mt-1 text-sm text-[#56604b]">{SITE_CONFIG.description}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link href="/about" className="rounded-lg border border-[#d7deca] bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#1f2617] hover:bg-[#ebefdf]">About</Link>
+              <Link href="/contact" className="rounded-lg border border-[#d7deca] bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#1f2617] hover:bg-[#ebefdf]">Contact</Link>
+            </div>
           </div>
           <div className="flex flex-wrap gap-3">
             {enabledTasks.slice(0, 5).map((task) => (
@@ -96,6 +101,10 @@ export function Footer() {
                 </div>
               </div>
               <p className="mt-5 max-w-md text-sm leading-7 text-slate-300">{SITE_CONFIG.description}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Link href="/about" className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-white hover:bg-white/15">About</Link>
+                <Link href="/contact" className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-white hover:bg-white/15">Contact</Link>
+              </div>
               {primaryTask ? (
                 <Link href={primaryTask.route} className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#8df0c8] px-4 py-2.5 text-sm font-semibold text-[#07111f] hover:bg-[#77dfb8]">
                   Explore {primaryTask.label}
@@ -150,6 +159,10 @@ export function Footer() {
               </div>
               <h3 className="mt-5 text-3xl font-semibold tracking-[-0.04em]">{SITE_CONFIG.name}</h3>
               <p className="mt-4 max-w-md text-sm leading-7 text-[#72594a]">{SITE_CONFIG.description}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link href="/about" className="rounded-full border border-[#dbc6b6] bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#2f1d16] hover:bg-[#f9ecdd]">About</Link>
+              <Link href="/contact" className="rounded-full border border-[#dbc6b6] bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#2f1d16] hover:bg-[#f9ecdd]">Contact</Link>
+            </div>
             </div>
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8b6d5a]">Sections</h4>
@@ -188,6 +201,10 @@ export function Footer() {
               </div>
             </Link>
             <p className="mt-5 max-w-sm text-sm leading-7 text-slate-600">{SITE_CONFIG.description}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link href="/about" className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-slate-800 hover:bg-slate-100">About</Link>
+              <Link href="/contact" className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-slate-800 hover:bg-slate-100">Contact</Link>
+            </div>
           </div>
           {(['platform', 'company', 'resources', 'legal'] as const).map((section) => (
             <div key={section}>
