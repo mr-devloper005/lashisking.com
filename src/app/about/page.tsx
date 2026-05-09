@@ -29,7 +29,6 @@ export default function AboutPage() {
           <h1 className="mt-3 text-5xl font-semibold tracking-[-0.05em]">Built for modern discovery, publishing, and growth.</h1>
           <p className={`mt-4 max-w-3xl text-sm leading-8 ${tone.muted}`}>We blend structure, design clarity, and trusted content so users can find what matters faster and teams can scale confidently.</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/team" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.soft}`}>Meet the team</Link>
             <Link href="/contact" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.action}`}>Contact us <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </section>

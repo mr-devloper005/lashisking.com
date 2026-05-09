@@ -99,8 +99,7 @@ export function Navbar() {
 
   const navigation = useMemo(() => SITE_CONFIG.tasks.filter((task) => task.enabled && task.key !== 'profile' && task.key !== 'image'), [])
   const sidebarQuickLinks = [
-    { name: 'Image Sharing', href: '/image-sharing', icon: ImageIcon },
-    { name: 'Profiles', href: '/profile', icon: User },
+    { name: 'Image', href: '/image-sharing', icon: ImageIcon },
   ]
   const primaryNavigation = navigation.slice(0, 5)
   const mobileNavigation = navigation.map((task) => ({
