@@ -1,8 +1,14 @@
+'use client'
+
+import React from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Sparkles } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { LOGIN_PAGE_OVERRIDE_ENABLED, LoginPageOverride } from '@/overrides/login-page'
+import { useAuth } from '@/lib/auth-context'
+import { useToast } from '@/components/ui/use-toast'
 
 function getLoginConfig() {
   return {
@@ -22,6 +28,41 @@ export default function LoginPage() {
   }
 
   const config = getLoginConfig()
+  const router = useRouter()
+  const { login } = useAuth()
+  const { toast } = useToast()
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email || !password) {
+      toast({
+        title: 'Missing fields',
+        description: 'Please enter both email and password.',
+        variant: 'destructive',
+      })
+      return
+    }
+    setIsLoading(true)
+    try {
+      await login(email, password)
+      toast({
+        title: 'Welcome back!',
+        description: 'You have successfully signed in.',
+      })
+      router.push('/')
+    } catch (error) {
+      toast({
+        title: 'Sign in failed',
+        description: 'Please check your credentials and try again.',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className={`min-h-screen ${config.shell}`}>
@@ -40,10 +81,29 @@ export default function LoginPage() {
 
           <div className={`rounded-[2rem] p-8 ${config.panel}`}>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Welcome back</p>
-            <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Password" type="password" />
-              <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action}`}>Sign in</button>
+            <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
+              <input 
+                className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" 
+                placeholder="Email address" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
+              />
+              <input 
+                className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" 
+                placeholder="Password" 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
+              />
+              <button 
+                type="submit" 
+                className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Signing in...' : 'Sign in'}
+              </button>
             </form>
             <div className={`mt-6 flex items-center justify-between text-sm ${config.muted}`}>
               <Link href="/forgot-password" className="hover:underline">Forgot password?</Link>
