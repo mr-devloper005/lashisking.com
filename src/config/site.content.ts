@@ -160,9 +160,7 @@ export const taskIntroCopy: Record<
       'Browse the latest visual updates, then continue into related stories or supporting pages for more context.',
     ],
     links: [
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Explore listings', href: '/listings' },
-      { label: 'Open classifieds', href: '/classifieds' },
+      { label: 'Read Search', href: '/search' },
     ],
   },
   profile: {
